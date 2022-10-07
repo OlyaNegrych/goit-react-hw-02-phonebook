@@ -1,30 +1,16 @@
-import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-class Filter extends Component {
-  state = {
-    name: '',
-    number: '',
-    filter: '',
-  };
+const Filter = ({ onChange }) => {
+  return (
+    <label>
+      Find contacts by name
+      <input type="name" name="find" onChange={onChange}></input>
+    </label>
+  );
+};
 
-  // onFilter = e => {
-  //   this.setState({ filter: e.target.value });
-  // };
-
-  resetFilter = () => {
-    this.setState({
-      filter: '',
-    });
-  };
-
-  render() {
-    return (
-      <label>
-        Find contacts by name
-        <input type="name" name="find"></input>
-      </label>
-    );
-  }
-}
+ Filter.propTypes = {
+   onChange: PropTypes.func.isRequired,
+ };
 
 export default Filter;

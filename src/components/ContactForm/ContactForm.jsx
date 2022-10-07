@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import { nanoid } from 'nanoid';
-import Notiflix from 'notiflix';
+import PropTypes from 'prop-types';
 
 class ContactForm extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
     name: '',
     number: '',
   };
@@ -17,30 +10,6 @@ class ContactForm extends Component {
   handleChange = e => {
     const { name, value } = e.currentTarget;
     this.setState({ [name]: value });
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-
-    const { name, number } = e.target.elements;
-
-    const checkNameList = this.state.contacts.some(
-      contact =>
-        contact.name.toLocaleLowerCase() === name.value.toLocaleLowerCase()
-    );
-
-    if (checkNameList) {
-      Notiflix.Notify.warning(`${name.value} is already in contacts`);
-      return;
-    }
-
-    const contact = { id: nanoid(4), name: name.value, number: number.value };
-    this.setState(prevState => ({
-      contacts: [contact, ...prevState.contacts],
-    }));
-
-    this.props.onSubmit(this.state);
-    this.resetForm();
   };
 
   resetForm = () => {
@@ -52,7 +21,7 @@ class ContactForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.props.onSubmit}>
         <label>
           Name
           <input
@@ -84,5 +53,9 @@ class ContactForm extends Component {
     );
   }
 }
+
+ ContactForm.propTypes = {
+   onSubmit: PropTypes.func.isRequired,
+ };
 
 export default ContactForm;
