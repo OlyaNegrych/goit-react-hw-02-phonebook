@@ -4,6 +4,7 @@ import Notiflix from 'notiflix';
 import ContactForm from '../ContactForm/ContactForm';
 import Filter from '../Filter/Filter';
 import ContactList from 'components/ContactList/ContactList';
+import Section from '../Section/Section';
 
 class App extends Component {
   state = {
@@ -16,26 +17,23 @@ class App extends Component {
     filter: '',
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-
-    const { name, number } = e.target.elements;
+  handleSubmit = ({ name, number }) => {
+    // e.preventDefault();
+    // const { name, number } = e.target.elements;
 
     const checkNameList = this.state.contacts.some(
-      contact =>
-        contact.name.toLocaleLowerCase() === name.value.toLocaleLowerCase()
+      contact => contact.name.toLowerCase() === name.toLowerCase()
     );
 
     if (checkNameList) {
-      Notiflix.Notify.warning(`${name.value} is already in contacts`);
+      Notiflix.Notify.warning(`${name} is already in contacts`);
       return;
     }
 
-    const contact = { id: nanoid(4), name: name.value, number: number.value };
+    const contact = { id: nanoid(4), name: name, number: number };
     this.setState(prevState => ({
       contacts: [contact, ...prevState.contacts],
     }));
-
   };
 
   onDeleteContact = contactId => {
@@ -51,27 +49,25 @@ class App extends Component {
   onFilteredContacts = () => {
     const contacts = this.state.contacts;
     return contacts.filter(contact =>
-      contact.name
-        .toLocaleLowerCase()
-        .includes(this.state.filter.toLocaleLowerCase())
+      contact.name.toLowerCase().includes(this.state.filter)
     );
   };
 
   render() {
     return (
       <>
-        <h2>Phonebook</h2>
+        <Section title='Phonebook'>
+          <ContactForm onFormSubmit={this.handleSubmit} />
+        </Section>
 
-        <ContactForm onSubmit={this.handleSubmit} />
-
-        <h2>Contacts</h2>
-
-        <Filter onChange={this.onFilterChange} />
-
-        <ContactList
-          contacts={this.onFilteredContacts()}
-          onDeleteContact={this.onDeleteContact}
-        />
+        <Section title='Contacts'>
+          {' '}
+          <Filter onChange={this.onFilterChange} value={this.state.filter} />
+          <ContactList
+            contacts={this.onFilteredContacts()}
+            onDeleteContact={this.onDeleteContact}
+          />
+        </Section>
       </>
     );
   }

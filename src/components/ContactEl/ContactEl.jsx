@@ -1,18 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {DeleteBtn} from '../ContactEl/ContactEl.styled'
+import {ContactItem} from '../ContactEl/ContactEl.styled'
 
 const ContactEl = ({contacts, onDeleteContact}) => {
  
     return (
       <>
         {contacts.map(({ id, name, number }) => (
-          <li key={id}>
+          <ContactItem key={id}>
             {' '}
             {name}: {number}
-            <button type="button" onClick={() => onDeleteContact(id)}>
+            <DeleteBtn type="button" onClick={() => onDeleteContact(id)}>
               Delete
-            </button>
-          </li>
+            </DeleteBtn>
+          </ContactItem>
         ))}
       </>
     );
