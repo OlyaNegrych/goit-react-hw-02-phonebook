@@ -27,7 +27,7 @@ export const AddBtn = styled.button`
 
   :hover,
   :focus {
-    background-color: #40c4ff;
+    background-color: #00e676;
     font-weight: 700;
   }
 `;
